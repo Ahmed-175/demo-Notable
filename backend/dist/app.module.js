@@ -22,7 +22,12 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
-            mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL),
+            mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL, {
+                connectionFactory: (connection) => {
+                    connection.plugin(require('mongoose-autopopulate'));
+                    return connection;
+                },
+            }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             notes_module_1.NotesModule,

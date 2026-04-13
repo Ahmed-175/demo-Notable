@@ -8,18 +8,70 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotesController = void 0;
 const common_1 = require("@nestjs/common");
 const notes_service_1 = require("./notes.service");
+const jwt_guard_1 = require("../common/guards/jwt.guard");
+const swagger_1 = require("@nestjs/swagger");
+const create_note_dto_1 = require("./dto/create-note.dto");
 let NotesController = class NotesController {
     notesService;
     constructor(notesService) {
         this.notesService = notesService;
     }
+    async createNote(req, body) {
+        return await this.notesService.create(body, req.user._id);
+    }
+    async deleteNote(req, id) {
+        return await this.notesService.delete(id, req.user._id.toString());
+    }
+    async editNote(req, id, body) {
+        return await this.notesService.update(body, req.user._id.toString(), id);
+    }
+    async getNote(id) {
+        return await this.notesService.findById(id);
+    }
 };
 exports.NotesController = NotesController;
+__decorate([
+    (0, common_1.Post)('create'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_note_dto_1.CreateNoteDto]),
+    __metadata("design:returntype", Promise)
+], NotesController.prototype, "createNote", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], NotesController.prototype, "deleteNote", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, create_note_dto_1.CreateNoteDto]),
+    __metadata("design:returntype", Promise)
+], NotesController.prototype, "editNote", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], NotesController.prototype, "getNote", null);
 exports.NotesController = NotesController = __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Controller)('notes'),
     __metadata("design:paramtypes", [notes_service_1.NotesService])
 ], NotesController);

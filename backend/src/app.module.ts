@@ -10,11 +10,15 @@ import { NotesModule } from './notes/notes.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL as string),
+    MongooseModule.forRoot(process.env.MONGO_URL as string, {
+      connectionFactory: (connection) => {
+        connection.plugin(require('mongoose-autopopulate'));
+        return connection;
+      },
+    }),
     UsersModule,
     AuthModule,
     NotesModule,
-    
   ],
 })
 export class AppModule {}

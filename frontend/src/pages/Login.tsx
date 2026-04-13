@@ -70,7 +70,7 @@ const Login = () => {
         <button
           onClick={handleLogin}
           className={`mt-4 p-3 w-full mb-5 text-white 
-        rounded-2xl ${loading ? "bg-gray-700" : "bg-blue-600 hover:bg-blue-900"} duration-150 cursor-pointer`}
+        rounded-xl ${loading ? "bg-gray-700" : "bg-black hover:bg-gray-900"} duration-150 cursor-pointer`}
         >
           {loading ? "loading..." : "Login Now"}
         </button>

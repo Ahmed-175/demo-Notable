@@ -10,13 +10,19 @@ exports.NotesModule = void 0;
 const common_1 = require("@nestjs/common");
 const notes_service_1 = require("./notes.service");
 const notes_controller_1 = require("./notes.controller");
+const mongoose_1 = require("@nestjs/mongoose");
+const note_schema_1 = require("./schemas/note.schema");
 let NotesModule = class NotesModule {
 };
 exports.NotesModule = NotesModule;
 exports.NotesModule = NotesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: note_schema_1.Note.name, schema: note_schema_1.noteSchema }]),
+        ],
         controllers: [notes_controller_1.NotesController],
         providers: [notes_service_1.NotesService],
+        exports: [notes_service_1.NotesService]
     })
 ], NotesModule);
 //# sourceMappingURL=notes.module.js.map
