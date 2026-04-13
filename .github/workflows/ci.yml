@@ -9,12 +9,20 @@ on:
 jobs:
   backend-test:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+    env:
+      MONGO_URI: mongodb://localhost:27017/test_db
+      JWT_SECRET: test_secret_key
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
